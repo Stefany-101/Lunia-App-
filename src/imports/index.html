@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#C94F7B">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Luna · Tu ciclo, tu poder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --rose: #C94F7B; --rose-deep: #8B2252; --rose-light: #F9ECF1; --rose-mid: #E8A0BC;
+  --gold: #C8973A; --gold-light: #FDF3E0; --gold-bright: #E8B84B;
+  --plum: #6B4C8A; --plum-light: #F0EBF7;
+  --teal: #2A9B78; --teal-light: #E4F5EF;
+  --cream: #FEF9F5; --text: #2A1A22; --text-muted: #7A5A6A;
+  --border: rgba(180,120,150,0.18);
+  --radius: 16px; --radius-sm: 10px;
+  --shadow: 0 4px 24px rgba(180,80,120,0.10);
+  --shadow-gold: 0 4px 20px rgba(200,151,58,0.25);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── SCREENS ─── */
+.screen { display: none; min-height: 100vh; animation: fadeIn 0.35s ease; }
+.screen.active { display: flex; flex-direction: column; }
+@keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: none; } }
+
+/* ─── SPLASH ─── */
+#screen-splash {
+  background: linear-gradient(160deg, #2A1A22 0%, #5B1A35 50%, #8B2252 100%);
+  align-items: center; justify-content: center; text-align: center; gap: 0;
+  position: relative; overflow: hidden;
+}
+#screen-splash::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(200,151,58,0.12), transparent);
+}
+.splash-moon {
+  font-size: 72px; margin-bottom: 24px; animation: moonFloat 4s ease-in-out infinite;
+  position: relative; z-index: 1;
+}
+@keyframes moonFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.splash-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px; font-weight: 300; color: #FDF3E0;
+  letter-spacing: 0.04em; line-height: 1;
+  position: relative; z-index: 1;
+}
+.splash-title em { font-style: italic; color: var(--gold-bright); }
+.splash-tagline {
+  font-size: 14px; font-weight: 300; color: rgba(253,243,224,0.65);
+  margin: 12px 0 48px; letter-spacing: 0.12em; text-transform: uppercase;
+  position: relative; z-index: 1;
+}
+.splash-stars { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.star {
+  position: absolute; width: 2px; height: 2px; background: #FDF3E0;
+  border-radius: 50%; animation: twinkle var(--d,3s) ease-in-out infinite;
+  opacity: var(--o, 0.4);
+}
+@keyframes twinkle { 0%,100% { opacity: var(--o,0.4); } 50% { opacity: 0.9; } }
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color: #2A1A22; font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 15px; border: none; border-radius: 50px; padding: 16px 40px;
+  cursor: pointer; transition: all 0.25s; box-shadow: var(--shadow-gold);
+  position: relative; z-index: 1; letter-spacing: 0.02em;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,151,58,0.4); }
+.btn-secondary {
+  background: transparent; color: rgba(253,243,224,0.7);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300;
+  border: none; cursor: pointer; margin-top: 16px; transition: color 0.2s;
+  position: relative; z-index: 1; text-decoration: underline; text-underline-offset: 3px;
+}
+.btn-secondary:hover { color: #FDF3E0; }
+
+/* ─── AUTH ─── */
+#screen-login, #screen-register {
+  background: var(--cream);
+  align-items: stretch; padding: 0;
+}
+.auth-top {
+  background: linear-gradient(160deg, #2A1A22, #5B1A35);
+  padding: 48px 32px 40px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.auth-logo { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: #FDF3E0; }
+.auth-logo em { font-style: italic; color: var(--gold-bright); }
+.auth-subtitle { font-size: 13px; color: rgba(253,243,224,0.55); font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; }
+.auth-body { padding: 32px 28px; flex: 1; }
+.auth-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--text); margin-bottom: 6px; }
+.auth-hint { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
+.field { margin-bottom: 18px; }
+.field label { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 6px; }
+.field input {
+  width: 100%; padding: 14px 16px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
+  transition: border-color 0.2s; outline: none;
+}
+.field input:focus { border-color: var(--rose); }
+.btn-rose {
+  width: 100%; background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+  color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 16px;
+  border: none; border-radius: 50px; padding: 16px; cursor: pointer;
+  transition: all 0.25s; box-shadow: 0 4px 20px rgba(180,80,120,0.3); margin-top: 8px;
+}
+.btn-rose:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(180,80,120,0.45); }
+.auth-switch { text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-muted); }
+.auth-switch a { color: var(--rose); cursor: pointer; font-weight: 500; text-decoration: none; }
+.auth-switch a:hover { text-decoration: underline; }
+
+/* ─── ONBOARDING ─── */
+#screen-onboarding { background: var(--cream); }
+.onboard-header {
+  background: linear-gradient(160deg, #2A1A22, #5B1A35);
+  padding: 32px 28px 28px;
+}
+.onboard-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: #FDF3E0; }
+.onboard-header p { font-size: 13px; color: rgba(253,243,224,0.55); margin-top: 4px; }
+.progress-bar { display: flex; gap: 6px; margin-top: 20px; }
+.pb-seg { height: 3px; flex: 1; background: rgba(253,243,224,0.2); border-radius: 2px; transition: background 0.4s; }
+.pb-seg.done { background: var(--gold-bright); }
+.onboard-body { padding: 28px; flex: 1; }
+.onboard-step { display: none; }
+.onboard-step.active { display: block; animation: fadeIn 0.3s ease; }
+.step-q { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+.step-hint { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; }
+.option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.option-btn {
+  padding: 14px 10px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  background: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px;
+  color: var(--text-muted); cursor: pointer; transition: all 0.2s; text-align: center;
+  display: flex; flex-direction: column; gap: 4px; align-items: center;
+}
+.option-btn span.icon { font-size: 22px; }
+.option-btn:hover { border-color: var(--rose-mid); color: var(--rose); }
+.option-btn.sel { border-color: var(--rose); background: var(--rose-light); color: var(--rose-deep); font-weight: 500; }
+.slider-wrap { margin: 8px 0 24px; }
+.slider-val { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--rose); text-align: center; line-height: 1; margin-bottom: 4px; }
+.slider-unit { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+input[type=range] {
+  width: 100%; -webkit-appearance: none; height: 4px;
+  background: linear-gradient(to right, var(--rose) 0%, var(--rose) 50%, var(--border) 50%);
+  border-radius: 2px; outline: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--rose); box-shadow: 0 2px 8px rgba(180,80,120,0.4); cursor: pointer;
+}
+.date-field { margin-bottom: 24px; }
+.date-field input[type=date] {
+  width: 100%; padding: 14px 16px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
+  outline: none;
+}
+.date-field input[type=date]:focus { border-color: var(--rose); }
+.notify-toggle { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #fff; border-radius: var(--radius-sm); border: 1.5px solid var(--border); margin-bottom: 24px; }
+.toggle-info h4 { font-size: 14px; font-weight: 500; color: var(--text); }
+.toggle-info p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.toggle { position: relative; width: 44px; height: 24px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: #ddd; border-radius: 24px; cursor: pointer; transition: 0.3s; }
+.toggle-slider::before { content:''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+.toggle input:checked + .toggle-slider { background: var(--rose); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+.btn-next { width: 100%; background: linear-gradient(135deg, var(--rose), var(--rose-deep)); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 15px; border: none; border-radius: 50px; padding: 15px; cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 20px rgba(180,80,120,0.3); }
+.btn-next:hover { transform: translateY(-2px); }
+
+/* ─── MAIN APP ─── */
+#screen-app { background: var(--cream); padding-bottom: 80px; }
+.app-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(254,249,245,0.95); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border); display: flex; z-index: 100;
+  max-width: 520px; margin: 0 auto;
+}
+.nav-item {
+  flex: 1; padding: 12px 4px 10px; background: none; border: none;
+  cursor: pointer; display: flex; flex-direction: column; align-items: center;
+  gap: 3px; font-family: 'DM Sans', sans-serif; font-size: 10px;
+  color: var(--text-muted); transition: color 0.2s; letter-spacing: 0.02em;
+}
+.nav-item i { font-size: 20px; transition: transform 0.2s; }
+.nav-item.active { color: var(--rose); }
+.nav-item.active i { transform: scale(1.1); }
+.tab { display: none; padding: 0 20px; animation: fadeIn 0.3s ease; }
+.tab.active { display: block; }
+
+/* ─── HOME TAB ─── */
+.home-hero {
+  background: linear-gradient(160deg, #2A1A22 0%, #6B2245 100%);
+  margin: 0 -20px; padding: 48px 28px 32px;
+  position: relative; overflow: hidden;
+}
+.home-hero::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(200,151,58,0.12), transparent);
+  pointer-events: none;
+}
+.hero-greeting { font-size: 13px; color: rgba(253,243,224,0.55); font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; }
+.hero-name { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: #FDF3E0; margin: 4px 0 20px; }
+.hero-name em { font-style: italic; color: var(--gold-bright); }
+.phase-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(253,243,224,0.12); border: 1px solid rgba(253,243,224,0.2);
+  border-radius: 50px; padding: 8px 16px; margin-bottom: 20px;
+}
+.phase-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold-bright); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1; transform: scale(1); } 50% { opacity:0.6; transform: scale(1.4); } }
+.phase-name { font-size: 13px; color: #FDF3E0; font-weight: 500; }
+.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; position: relative; z-index: 1; }
+.stat-card { background: rgba(253,243,224,0.1); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; border: 1px solid rgba(253,243,224,0.12); }
+.stat-n { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--gold-bright); line-height: 1; }
+.stat-l { font-size: 10px; color: rgba(253,243,224,0.5); margin-top: 3px; letter-spacing: 0.05em; }
+.section { margin-top: 28px; }
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--text); }
+.section-link { font-size: 12px; color: var(--rose); cursor: pointer; text-decoration: none; }
+.phase-strip { display: flex; gap: 3px; margin-bottom: 10px; height: 10px; }
+.ps { border-radius: 5px; cursor: pointer; transition: transform 0.15s, opacity 0.15s; opacity: 0.7; }
+.ps:hover, .ps.current { opacity: 1; transform: scaleY(1.5); }
+.ps.mens { background: var(--rose); flex: 5; }
+.ps.follic { background: var(--gold); flex: 9; }
+.ps.ovul { background: var(--teal); flex: 3; }
+.ps.lut { background: var(--plum); flex: 11; }
+.phase-info-box { background: #fff; border-radius: var(--radius-sm); padding: 14px 16px; border: 1px solid var(--border); font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; display: none; }
+.phase-info-box.show { display: block; animation: fadeIn 0.2s ease; }
+.phase-info-box strong { color: var(--text); display: block; margin-bottom: 4px; }
+.symptom-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.sym-btn {
+  padding: 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  background: #fff; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 12px; color: var(--text-muted); display: flex; align-items: center;
+  gap: 8px; transition: all 0.2s;
+}
+.sym-btn i { font-size: 16px; color: var(--rose-mid); }
+.sym-btn.sel { background: var(--rose-light); border-color: var(--rose-mid); color: var(--rose-deep); }
+.sym-btn.sel i { color: var(--rose); }
+.mood-strip { display: flex; gap: 8px; justify-content: center; margin-bottom: 4px; }
+.mood { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--border); background: #fff; font-size: 22px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+.mood:hover { transform: scale(1.1); }
+.mood.sel { outline: 2.5px solid var(--rose); outline-offset: 2px; transform: scale(1.15); }
+.reminder-card {
+  background: linear-gradient(135deg, var(--rose-light), #fff);
+  border: 1px solid var(--rose-mid); border-radius: var(--radius);
+  padding: 18px; display: flex; align-items: center; gap: 14px;
+}
+.rc-icon { font-size: 28px; }
+.rc-info h4 { font-size: 14px; font-weight: 500; color: var(--rose-deep); }
+.rc-info p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.rc-days { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--rose); margin-left: auto; line-height: 1; }
+.rc-days span { font-size: 11px; color: var(--text-muted); display: block; text-align: center; }
+
+/* ─── CALENDAR TAB ─── */
+.cal-month { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--text); margin: 24px 0 16px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 20px; }
+.cal-head { font-size: 10px; color: var(--text-muted); text-align: center; padding: 4px 0; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+.cal-day { font-size: 13px; text-align: center; padding: 8px 4px; border-radius: 8px; cursor: pointer; color: var(--text); transition: all 0.15s; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.cal-day:hover { background: var(--rose-light); }
+.cal-day.mens { background: var(--rose); color: #fff; font-weight: 500; }
+.cal-day.ovul { background: var(--teal); color: #fff; font-weight: 500; }
+.cal-day.fertile { background: var(--teal-light); color: #1A6B52; }
+.cal-day.today { outline: 2px solid var(--rose); outline-offset: -2px; font-weight: 500; }
+.cal-day.pred { background: var(--rose-light); color: var(--rose); opacity: 0.65; }
+.cal-day.empty { opacity: 0; pointer-events: none; }
+.upcoming-list { display: flex; flex-direction: column; gap: 10px; }
+.upcoming-item { display: flex; align-items: center; gap: 14px; background: #fff; border-radius: var(--radius-sm); padding: 14px 16px; border: 1px solid var(--border); }
+.up-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.up-info { flex: 1; }
+.up-info h4 { font-size: 13px; font-weight: 500; color: var(--text); }
+.up-info p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.up-days { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--rose); }
+
+/* ─── FOOD TAB ─── */
+.filter-scroll { display: flex; gap: 8px; margin: 20px 0 16px; overflow-x: auto; padding-bottom: 4px; }
+.filter-scroll::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 8px 16px; border-radius: 50px; border: 1.5px solid var(--border); background: #fff; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text-muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; font-weight: 400; }
+.filter-btn.active { background: var(--rose); border-color: var(--rose); color: #fff; }
+.food-card {
+  background: #fff; border-radius: var(--radius); border: 1px solid var(--border);
+  padding: 16px; margin-bottom: 12px; display: flex; gap: 14px;
+}
+.food-emoji { font-size: 32px; flex-shrink: 0; }
+.food-body { flex: 1; }
+.food-phase { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 20px; display: inline-block; margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+.fp-mens { background: var(--rose-light); color: var(--rose-deep); }
+.fp-follic { background: var(--gold-light); color: #7A5210; }
+.fp-ovul { background: var(--teal-light); color: #1A6B52; }
+.fp-lut { background: var(--plum-light); color: #4A2D6A; }
+.food-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.food-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+/* ─── PREMIUM BANNER ─── */
+.premium-gate {
+  background: linear-gradient(135deg, #2A1A22, #5B1A35);
+  border-radius: var(--radius); padding: 24px; margin: 20px 0;
+  position: relative; overflow: hidden;
+}
+.premium-gate::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 80% 50%, rgba(200,151,58,0.18), transparent);
+}
+.pg-stars { position: absolute; top: 12px; right: 16px; font-size: 18px; }
+.pg-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color: #2A1A22; font-size: 11px; font-weight: 700; padding: 4px 12px;
+  border-radius: 20px; margin-bottom: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  position: relative; z-index: 1;
+}
+.pg-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: #FDF3E0; margin-bottom: 6px; position: relative; z-index: 1; }
+.pg-title em { font-style: italic; color: var(--gold-bright); }
+.pg-sub { font-size: 13px; color: rgba(253,243,224,0.6); margin-bottom: 18px; line-height: 1.5; position: relative; z-index: 1; }
+.pg-features { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; position: relative; z-index: 1; }
+.pg-feat { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: rgba(253,243,224,0.85); }
+.pg-feat i { color: var(--gold-bright); font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+.btn-gold {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color: #2A1A22; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px;
+  border: none; border-radius: 50px; padding: 15px 32px; cursor: pointer;
+  transition: all 0.25s; box-shadow: var(--shadow-gold); width: 100%;
+  position: relative; z-index: 1; letter-spacing: 0.03em;
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,151,58,0.5); }
+.btn-gold i { font-size: 16px; }
+.diet-card { background: var(--gold-light); border: 1px solid rgba(200,151,58,0.3); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 10px; }
+.diet-title { font-size: 13px; font-weight: 500; color: #7A5210; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.diet-text { font-size: 12px; color: #9A6A20; line-height: 1.6; }
+
+/* ─── FAMILY TAB ─── */
+.family-intro { font-size: 13px; color: var(--text-muted); margin: 16px 0; line-height: 1.6; }
+.fam-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--border); padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+.fam-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500; color: #fff; flex-shrink: 0; }
+.fam-info { flex: 1; }
+.fam-name { font-size: 14px; font-weight: 500; color: var(--text); }
+.fam-phase { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.sync-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: auto; }
+.sync-on { background: var(--teal); }
+.sync-adj { background: var(--gold); animation: pulse 2s infinite; }
+.btn-add-fam { width: 100%; padding: 14px; border: 1.5px dashed var(--rose-mid); background: transparent; border-radius: var(--radius-sm); color: var(--rose); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; margin-bottom: 20px; }
+.btn-add-fam:hover { background: var(--rose-light); }
+.mcclintock { background: #fff; border-radius: var(--radius-sm); padding: 16px; border-left: 3px solid var(--plum); }
+.mcclintock h4 { font-size: 13px; font-weight: 500; color: var(--plum); margin-bottom: 6px; }
+.mcclintock p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.premium-fam { background: linear-gradient(135deg, #2A1A22, #5B1A35); border-radius: var(--radius); padding: 20px; margin-top: 20px; position: relative; overflow: hidden; }
+.premium-fam::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 80% 60% at 80% 50%, rgba(200,151,58,0.18), transparent); }
+.premium-fam .pg-title { font-size: 18px; margin-bottom: 8px; }
+.premium-fam .pg-sub { font-size: 12px; margin-bottom: 16px; }
+
+/* ─── INFO TAB ─── */
+.info-section { margin-bottom: 20px; }
+.info-card { background: #fff; border-radius: var(--radius-sm); padding: 16px; border: 1px solid var(--border); margin-bottom: 10px; }
+.info-card-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.info-card-title .phase-marker { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.info-card-text { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+.science-badge { font-size: 10px; background: var(--teal-light); color: #1A6B52; padding: 3px 8px; border-radius: 20px; font-weight: 500; margin-bottom: 14px; display: inline-block; letter-spacing: 0.05em; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-q { padding: 14px 0; font-size: 14px; font-weight: 500; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+.faq-q i { color: var(--text-muted); transition: transform 0.25s; font-size: 14px; }
+.faq-a { font-size: 13px; color: var(--text-muted); line-height: 1.7; padding-bottom: 14px; display: none; }
+.faq-item.open .faq-q i { transform: rotate(180deg); }
+.faq-item.open .faq-a { display: block; animation: fadeIn 0.25s ease; }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(10px);
+  background: var(--text); color: #FDF3E0; padding: 12px 22px; border-radius: 50px;
+  font-size: 13px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999;
+  white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(42,26,34,0.6);
+  z-index: 200; align-items: flex-end; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; animation: fadeIn 0.3s ease; }
+.modal-box {
+  background: var(--cream); border-radius: 24px 24px 0 0; padding: 28px 24px 40px;
+  width: 100%; max-width: 520px; max-height: 85vh; overflow-y: auto;
+}
+.modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
+.modal-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 6px; }
+.modal-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+.plan-row { display: flex; gap: 10px; margin-bottom: 20px; }
+.plan-card { flex: 1; padding: 16px 12px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); text-align: center; cursor: pointer; transition: all 0.2s; }
+.plan-card.recommended { border-color: var(--gold); background: var(--gold-light); }
+.plan-card.recommended .plan-price { color: var(--gold); }
+.plan-name { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 500; margin-bottom: 4px; }
+.plan-price { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--text); }
+.plan-per { font-size: 11px; color: var(--text-muted); }
+.plan-tag { font-size: 10px; background: var(--gold); color: #2A1A22; padding: 2px 8px; border-radius: 20px; font-weight: 700; margin-top: 6px; display: inline-block; }
+
+/* ─── LICENSE WALL ─── */
+#screen-license {
+  background: linear-gradient(160deg, #1A0F15 0%, #3D1028 55%, #6B1840 100%);
+  align-items: center; justify-content: center; padding: 32px 28px;
+  min-height: 100vh; position: relative; overflow: hidden;
+}
+#screen-license::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 70%, rgba(200,151,58,0.14), transparent);
+}
+.lic-card {
+  background: rgba(253,243,224,0.05); border: 1px solid rgba(253,243,224,0.12);
+  border-radius: 24px; padding: 32px 28px; width: 100%; max-width: 420px;
+  position: relative; z-index: 1; backdrop-filter: blur(8px);
+}
+.lic-moon { font-size: 48px; text-align: center; display: block; margin-bottom: 8px; }
+.lic-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: #FDF3E0; text-align: center; margin-bottom: 4px; }
+.lic-title em { font-style: italic; color: var(--gold-bright); }
+.lic-sub { font-size: 12px; color: rgba(253,243,224,0.5); text-align: center; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 28px; }
+.lic-tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+.tier-card {
+  border-radius: 14px; padding: 14px 12px; text-align: center; border: 1.5px solid rgba(253,243,224,0.15);
+  cursor: pointer; transition: all 0.2s;
+}
+.tier-card.essential { background: rgba(253,243,224,0.06); }
+.tier-card.premium-t { background: linear-gradient(135deg, rgba(200,151,58,0.2), rgba(232,184,75,0.12)); border-color: rgba(200,151,58,0.4); }
+.tier-icon { font-size: 26px; margin-bottom: 6px; }
+.tier-name { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FDF3E0; margin-bottom: 2px; }
+.tier-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold-bright); font-weight: 300; }
+.tier-desc { font-size: 10px; color: rgba(253,243,224,0.45); margin-top: 2px; line-height: 1.4; }
+.lic-input-wrap { position: relative; margin-bottom: 14px; }
+.lic-input {
+  width: 100%; padding: 15px 18px; border-radius: 50px;
+  border: 1.5px solid rgba(253,243,224,0.2); background: rgba(253,243,224,0.08);
+  font-family: 'DM Sans', sans-serif; font-size: 15px; color: #FDF3E0;
+  outline: none; transition: border-color 0.2s; text-align: center;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.lic-input::placeholder { color: rgba(253,243,224,0.3); letter-spacing: 0.04em; text-transform: none; font-size: 13px; }
+.lic-input:focus { border-color: var(--gold-bright); }
+.lic-input.error { border-color: #FF6B8A; animation: shake 0.4s ease; }
+.lic-input.success { border-color: #4CAF86; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+.btn-activate {
+  width: 100%; background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color: #1A0F15; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px;
+  border: none; border-radius: 50px; padding: 15px; cursor: pointer;
+  transition: all 0.25s; box-shadow: 0 4px 20px rgba(200,151,58,0.35);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-bottom: 12px; letter-spacing: 0.02em;
+}
+.btn-activate:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,151,58,0.5); }
+.btn-activate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-simulate-pay {
+  width: 100%; background: rgba(253,243,224,0.08); color: rgba(253,243,224,0.6);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400;
+  border: 1px dashed rgba(253,243,224,0.2); border-radius: 50px; padding: 12px;
+  cursor: pointer; transition: all 0.2s; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+}
+.btn-simulate-pay:hover { background: rgba(253,243,224,0.12); color: rgba(253,243,224,0.85); }
+.lic-error { font-size: 12px; color: #FF8FAB; text-align: center; min-height: 18px; margin-bottom: 6px; }
+.lic-success-msg { font-size: 12px; color: #6FDAB0; text-align: center; min-height: 18px; margin-bottom: 6px; }
+.lic-footer { font-size: 11px; color: rgba(253,243,224,0.3); text-align: center; line-height: 1.6; }
+.lic-footer a { color: rgba(253,243,224,0.5); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+/* Spinner */
+.spinner-overlay {
+  position: fixed; inset: 0; background: rgba(26,15,21,0.85); z-index: 999;
+  display: none; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+  backdrop-filter: blur(6px);
+}
+.spinner-overlay.show { display: flex; }
+.spinner {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 3px solid rgba(200,151,58,0.2);
+  border-top-color: var(--gold-bright);
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-text { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; color: #FDF3E0; text-align: center; line-height: 1.5; }
+.spinner-sub { font-size: 12px; color: rgba(253,243,224,0.45); letter-spacing: 0.08em; }
+/* Lock badge for Essential users */
+.lock-overlay {
+  position: absolute; inset: 0; border-radius: inherit;
+  background: rgba(42,26,34,0.65); backdrop-filter: blur(3px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  z-index: 5; cursor: pointer;
+}
+.lock-overlay i { font-size: 28px; color: var(--gold-bright); }
+.lock-overlay span { font-size: 11px; color: var(--gold-bright); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.lock-overlay small { font-size: 10px; color: rgba(253,243,224,0.5); }
+.premium-only-wrap { position: relative; }
+
+/* ─── RESPONSIVE ─── */
+.app-wrap { max-width: 520px; margin: 0 auto; min-height: 100vh; position: relative; }
+@media (min-width: 600px) {
+  .app-wrap { border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+<div class="app-wrap">
+
+<div id="screen-splash" class="screen active">
+  <div class="splash-stars" id="stars-container"></div>
+  <div class="splash-moon">🌙</div>
+  <div class="splash-title"><em>luna</em></div>
+  <div class="splash-tagline">Tu ciclo · Tu poder · Tu ritmo</div>
+  <button class="btn-primary" onclick="go('login')">Comenzar ✦</button>
+  <button class="btn-secondary" onclick="go('login')">Ya tengo cuenta</button>
+</div>
+
+<div id="screen-license" class="screen">
+  <div class="lic-card">
+    <span class="lic-moon">🌙</span>
+    <div class="lic-title"><em>luna</em></div>
+    <div class="lic-sub">activa tu tarjeta de acceso</div>
+
+    <div class="lic-tiers">
+      <div class="tier-card essential">
+        <div class="tier-icon">🌸</div>
+        <div class="tier-name">Pase Esencial</div>
+        <div class="tier-price">S/ 20</div>
+        <div class="tier-desc">Acceso completo al tracker + nutrición básica</div>
+      </div>
+      <div class="tier-card premium-t">
+        <div class="tier-icon">👑</div>
+        <div class="tier-name">Pase Premium</div>
+        <div class="tier-price">S/ 50</div>
+        <div class="tier-desc">Todo + Dieta Ciclo + Sincronía Familiar</div>
+      </div>
+    </div>
+
+    <div class="lic-input-wrap">
+      <input class="lic-input" type="text" id="license-code" placeholder="Ingresa tu código · ej. LUNA-PREM-101"
+        oninput="this.value=this.value.toUpperCase()" maxlength="16" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="lic-error" id="lic-error"></div>
+
+    <button class="btn-activate" onclick="activateLicense()">
+      <i class="fa-solid fa-unlock-keyhole"></i> Activar mi acceso
+    </button>
+
+    <button class="btn-simulate-pay" onclick="simulateBankPayment()">
+      <i class="fa-solid fa-credit-card"></i> Simular pago con tarjeta (demo bancario)
+    </button>
+
+    <div class="lic-footer">
+      ¿Ya activaste tu tarjeta antes? <a onclick="goBackToLogin()">Inicia sesión aquí</a><br>
+      Cada código es de uso único y personal. · <a onclick="showCodeHelp()">¿Dónde encuentro mi código?</a>
+    </div>
+  </div>
+</div>
+
+<div class="spinner-overlay" id="spinner-overlay">
+  <div class="spinner"></div>
+  <div class="spinner-text" id="spinner-text">Validando con<br>Webhook Bancario de LUNA...</div>
+  <div class="spinner-sub" id="spinner-sub">Por favor espera</div>
+</div>
+
+<div id="screen-login" class="screen">
+  <div class="auth-top">
+    <div class="auth-logo"><em>luna</em></div>
+    <div class="auth-subtitle">Tu ciclo · Tu poder</div>
+  </div>
+  <div class="auth-body">
+    <div class="auth-title">Bienvenida de vuelta</div>
+    <div class="auth-hint">Inicia sesión para continuar tu ciclo</div>
+    <div class="field">
+  <label>Nombre de usuario</label>
+  <input type="text" id="login-username" placeholder="tu_usuario" autocomplete="username">
+</div>
+<div class="field">
+  <label>Contraseña</label>
+  <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;margin-top:-4px">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-muted)">
+        <input type="checkbox" id="remember-me" style="width:15px;height:15px;accent-color:var(--rose);cursor:pointer">
+        Recordar mi sesión
+      </label>
+      <a onclick="go('forgot')" style="font-size:13px;color:var(--rose);cursor:pointer;text-decoration:none;font-weight:500">¿Olvidaste tu contraseña?</a>
+    </div>
+    <button class="btn-rose" onclick="doLogin()">Entrar</button>
+    <div class="auth-switch">¿Primera vez? <a onclick="go('register')">Crea tu cuenta gratis</a></div>
+  </div>
+</div>
+
+<div id="screen-forgot" class="screen">
+  <div class="auth-top">
+    <div class="auth-logo"><em>luna</em></div>
+    <div class="auth-subtitle">Recuperar acceso</div>
+  </div>
+  <div class="auth-body">
+    <div id="forgot-form">
+      <div class="auth-title">Recupera tu cuenta</div>
+      <div class="auth-hint">Ingresa tu nombre de usuario y te enviamos un enlace para restablecer tu contraseña.</div>
+      <div class="field">
+        <label>Nombre de usuario</label>
+        <input type="text" id="forgot-username" placeholder="tu_usuario" autocomplete="username">
+      </div>
+      <button class="btn-rose" onclick="doForgot()">Enviar enlace de recuperación</button>
+      <div class="auth-switch"><a onclick="go('login')" style="color:var(--text-muted)">← Volver al inicio de sesión</a></div>
+    </div>
+    <div id="forgot-sent" style="display:none;text-align:center;padding:20px 0">
+      <div style="font-size:52px;margin-bottom:16px">📩</div>
+      <div class="auth-title" style="text-align:center">Revisa tu correo</div>
+      <div style="font-size:13px;color:var(--text-muted);margin:10px 0 24px;line-height:1.7" id="forgot-sent-msg">Te enviamos un enlace a <strong id="forgot-sent-email"></strong>. Haz clic en él para crear una nueva contraseña.</div>
+      <div style="background:var(--rose-light);border:1px solid var(--rose-mid);border-radius:var(--radius-sm);padding:14px;font-size:12px;color:var(--rose-deep);text-align:left;margin-bottom:24px">
+        <strong>¿No ves el correo?</strong> Revisa tu carpeta de spam o correo no deseado. El enlace expira en 30 minutos.
+      </div>
+      <div id="reset-form" style="display:none;text-align:left">
+        <div class="auth-title" style="font-size:22px;margin-bottom:6px">Nueva contraseña</div>
+        <div class="auth-hint">Ingresa tu nueva contraseña para tu cuenta Luna.</div>
+        <div class="field"><label>Nueva contraseña</label><input type="password" id="new-pass1" placeholder="Mínimo 6 caracteres"></div>
+        <div class="field"><label>Confirmar contraseña</label><input type="password" id="new-pass2" placeholder="Repite la contraseña"></div>
+        <button class="btn-rose" onclick="doResetPass()">Guardar nueva contraseña</button>
+      </div>
+      <button onclick="go('login')" style="background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px">← Volver al inicio de sesión</button>
+      <br><br>
+      <button onclick="showResetForm()" style="background:none;border:none;color:var(--rose);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500">Simular: ya tengo el código → cambiar contraseña</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-register" class="screen">
+  <div class="auth-top">
+    <div class="auth-logo"><em>luna</em></div>
+    <div class="auth-subtitle">Tu ciclo · Tu poder</div>
+  </div>
+  <div class="auth-body">
+    <div class="auth-title">Crea tu cuenta</div>
+    <div class="auth-hint">Gratis para siempre · sin tarjeta</div>
+    <div class="field">
+  <label>Nombre de usuario</label>
+  <input type="text" id="reg-username" placeholder="tu_usuario">
+</div>
+<div class="field">
+  <label>Contraseña</label>
+  <input type="password" id="reg-pass" placeholder="Mínimo 8 caracteres">
+</div>
+    <button class="btn-rose" onclick="doRegister()">Crear mi cuenta</button>
+    <div class="auth-switch">¿Recordar mi cuenta? <a onclick="go('login')">Inicia sesión</a></div>
+  </div>
+</div>
+
+<div id="screen-onboarding" class="screen">
+  <div class="onboard-header">
+    <h2>Cuéntanos sobre ti 🌸</h2>
+    <p>Solo tarda 2 minutos · puedes ajustar después</p>
+    <div class="progress-bar">
+      <div class="pb-seg done" id="pb1"></div>
+      <div class="pb-seg" id="pb2"></div>
+      <div class="pb-seg" id="pb3"></div>
+      <div class="pb-seg" id="pb4"></div>
+      <div class="pb-seg" id="pb5"></div>
+    </div>
+  </div>
+  <div class="onboard-body">
+
+    <div class="onboard-step active" id="step1">
+      <div class="step-q">¿Cuántos días dura tu ciclo menstrual?</div>
+      <div class="step-hint">Desde el primer día de tu regla hasta el día antes del siguiente. Lo más común es 28 días.</div>
+      <div class="slider-wrap">
+        <div class="slider-val" id="cycle-val">28</div>
+        <div class="slider-unit">días de ciclo</div>
+        <input type="range" min="21" max="40" value="28" id="cycle-slider"
+          oninput="updateSlider('cycle-slider','cycle-val'); updateRangeGradient(this)">
+      </div>
+      <button class="btn-next" onclick="nextStep(2)">Siguiente →</button>
+    </div>
+
+    <div class="onboard-step" id="step2">
+      <div class="step-q">¿Cuántos días te dura la menstruación?</div>
+      <div class="step-hint">El tiempo que tienes sangrado activo. Normalmente entre 3 y 7 días.</div>
+      <div class="slider-wrap">
+        <div class="slider-val" id="period-val">5</div>
+        <div class="slider-unit">días de sangrado</div>
+        <input type="range" min="2" max="10" value="5" id="period-slider"
+          oninput="updateSlider('period-slider','period-val'); updateRangeGradient(this)">
+      </div>
+      <button class="btn-next" onclick="nextStep(3)">Siguiente →</button>
+    </div>
+
+    <div class="onboard-step" id="step3">
+      <div class="step-q">¿Cuándo fue el primer día de tu última regla?</div>
+      <div class="step-hint">Esta fecha nos ayuda a calcular tu fase actual y predecir tu próximo ciclo.</div>
+      <div class="date-field">
+        <input type="date" id="last-period" max="">
+      </div>
+      <button class="btn-next" onclick="nextStep(4)">Siguiente →</button>
+    </div>
+
+    <div class="onboard-step" id="step4">
+      <div class="step-q">¿Cómo describirías tu flujo?</div>
+      <div class="step-hint">Esto nos ayuda a personalizar recomendaciones nutricionales para ti.</div>
+      <div class="option-grid">
+        <button class="option-btn" onclick="selectOption(this,'flow')"><span class="icon">🌊</span>Abundante</button>
+        <button class="option-btn sel" onclick="selectOption(this,'flow')"><span class="icon">💧</span>Normal</button>
+        <button class="option-btn" onclick="selectOption(this,'flow')"><span class="icon">✨</span>Escaso</button>
+        <button class="option-btn" onclick="selectOption(this,'flow')"><span class="icon">📊</span>Variable</button>
+      </div>
+      <button class="btn-next" onclick="nextStep(5)">Siguiente →</button>
+    </div>
+
+    <div class="onboard-step" id="step5">
+      <div class="step-q">Activa recordatorios 🔔</div>
+      <div class="step-hint">Luna puede avisarte cuando se acerca tu menstruación, ovulación y más.</div>
+      <div class="notify-toggle">
+        <div class="toggle-info">
+          <h4>Recordatorio de menstruación</h4>
+          <p>Te avisamos 2 días antes</p>
+        </div>
+        <label class="toggle"><input type="checkbox" id="notif-mens" checked><div class="toggle-slider"></div></label>
+      </div>
+      <div class="notify-toggle">
+        <div class="toggle-info">
+          <h4>Recordatorio de ovulación</h4>
+          <p>Aviso 1 día antes del pico fértil</p>
+        </div>
+        <label class="toggle"><input type="checkbox" id="notif-ovul" checked><div class="toggle-slider"></div></label>
+      </div>
+      <div class="notify-toggle">
+        <div class="toggle-info">
+          <h4>Tip diario de bienestar</h4>
+          <p>Consejo según tu fase del día</p>
+        </div>
+        <label class="toggle"><input type="checkbox" id="notif-tip"><div class="toggle-slider"></div></label>
+      </div>
+      <button class="btn-next" onclick="finishOnboarding()">¡Empezar con Luna! 🌙</button>
+    </div>
+
+  </div>
+</div>
+
+<div id="screen-app" class="screen">
+
+  <div id="tab-home" class="tab active">
+    <div class="home-hero">
+      <div class="hero-greeting">Hola de vuelta,</div>
+      <div class="hero-name" id="hero-name">Sofía <em>✦</em></div>
+      <div class="phase-badge">
+        <div class="phase-dot" id="phase-dot-color"></div>
+        <span class="phase-name" id="hero-phase">Fase Lútea</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-n" id="stat-day">22</div><div class="stat-l">día del ciclo</div></div>
+        <div class="stat-card"><div class="stat-n" id="stat-next">6</div><div class="stat-l">días para tu regla</div></div>
+        <div class="stat-card"><div class="stat-n" id="stat-cycle">28</div><div class="stat-l">días de ciclo</div></div>
+      </div>
+    </div>
+
+    <div style="padding:0 20px">
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">Tu ciclo</div>
+        </div>
+        <div class="phase-strip">
+          <div class="ps mens" onclick="showPInfo('mens')" title="Menstruación"></div>
+          <div class="ps follic" onclick="showPInfo('follic')" title="Folicular"></div>
+          <div class="ps ovul" onclick="showPInfo('ovul')" title="Ovulación"></div>
+          <div class="ps lut current" onclick="showPInfo('lut')" title="Lútea"></div>
+        </div>
+        <div class="phase-info-box" id="pinfo-box">
+          <strong id="pinfo-title"></strong>
+          <span id="pinfo-text"></span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="reminder-card">
+          <div class="rc-icon">🩸</div>
+          <div class="rc-info">
+            <h4>Próxima menstruación</h4>
+            <p id="next-date-text">Estimado: 14 mayo</p>
+          </div>
+          <div class="rc-days"><span id="rc-days-n">6</span><span>días</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title" style="margin-bottom:14px">¿Cómo te sientes hoy?</div>
+        <div class="symptom-wrap">
+          <button class="sym-btn" onclick="selectSymptom(this,'Cólicos')"><i class="fa-solid fa-face-sad-tear"></i>Cólicos</button>
+          <button class="sym-btn" onclick="selectSymptom(this,'Hinchazón')"><i class="fa-solid fa-droplet"></i>Hinchazón</button>
+          <button class="sym-btn" onclick="selectSymptom(this,'Fatiga')"><i class="fa-solid fa-bolt"></i>Fatiga</button>
+          <button class="sym-btn" onclick="selectSymptom(this,'Sensibilidad')"><i class="fa-solid fa-heart-pulse"></i>Sensibilidad</button>
+          <button class="sym-btn" onclick="selectSymptom(this,'Insomnio')"><i class="fa-solid fa-moon"></i>Insomnio</button>
+          <button class="sym-btn" onclick="selectSymptom(this,'Energía alta')"><i class="fa-solid fa-sun"></i>Energía alta</button>
+        </div>
+        <div style="text-align:center;font-size:12px;color:var(--text-muted);margin-bottom:10px">Estado de ánimo</div>
+        <div class="mood-strip">
+          <button class="mood" onclick="selMood(this)">😊</button>
+          <button class="mood" onclick="selMood(this)">🙂</button>
+          <button class="mood" onclick="selMood(this)">😐</button>
+          <button class="mood" onclick="selMood(this)">😔</button>
+          <button class="mood" onclick="selMood(this)">😤</button>
+          <button class="mood" onclick="selMood(this)">😰</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-calendar" class="tab">
+    <div style="padding:0 20px">
+      <div class="cal-month" id="cal-month-title">Mayo 2026</div>
+      <div class="cal-grid" id="cal-head-row">
+        <div class="cal-head">L</div><div class="cal-head">M</div><div class="cal-head">X</div>
+        <div class="cal-head">J</div><div class="cal-head">V</div><div class="cal-head">S</div><div class="cal-head">D</div>
+      </div>
+      <div class="cal-grid" id="cal-body"></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;margin-top:4px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)"><div style="width:10px;height:10px;border-radius:50%;background:var(--rose)"></div>Menstruación</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)"><div style="width:10px;height:10px;border-radius:50%;background:var(--teal)"></div>Ovulación</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)"><div style="width:10px;height:10px;border-radius:50%;background:var(--rose-light);border:1px solid var(--rose-mid)"></div>Predicción</div>
+      </div>
+      <div class="section-title" style="margin-bottom:14px">Próximos eventos</div>
+      <div class="upcoming-list">
+        <div class="upcoming-item">
+          <div class="up-dot" style="background:var(--rose)"></div>
+          <div class="up-info"><h4>🩸 Menstruación esperada</h4><p id="up-mens-date">Aprox. 14 mayo · 5 días</p></div>
+          <div class="up-days" id="up-mens-days">6d</div>
+        </div>
+        <div class="upcoming-item">
+          <div class="up-dot" style="background:var(--teal)"></div>
+          <div class="up-info"><h4>🌿 Ventana fértil</h4><p id="up-ovul-date">Aprox. 28 mayo</p></div>
+          <div class="up-days">20d</div>
+        </div>
+        <div class="upcoming-item">
+          <div class="up-dot" style="background:var(--gold)"></div>
+          <div class="up-info"><h4>⚡ Pico de energía</h4><p>Fase folicular · perfecta para entrenar</p></div>
+          <div class="up-days">18d</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-food" class="tab">
+    <div style="padding:0 20px">
+      <div class="section-title" style="margin-top:24px;margin-bottom:4px">Nutrición por ciclo</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:0">Alimentos que cuidan tus hormonas</div>
+      <div class="filter-scroll">
+        <button class="filter-btn active" onclick="filterFood(this,'all')">Todo el ciclo</button>
+        <button class="filter-btn" onclick="filterFood(this,'mens')">🩸 Menstruación</button>
+        <button class="filter-btn" onclick="filterFood(this,'follic')">🌱 Folicular</button>
+        <button class="filter-btn" onclick="filterFood(this,'ovul')">🌿 Ovulación</button>
+        <button class="filter-btn" onclick="filterFood(this,'lut')">🌙 Lútea</button>
+      </div>
+      <div id="food-list">
+        <div class="food-card" data-phase="mens">
+          <div class="food-emoji">🥬</div>
+          <div class="food-body"><span class="food-phase fp-mens">Menstruación</span><div class="food-title">Espinacas y lentejas</div><div class="food-desc">Hierro biodisponible esencial. La pérdida de sangre reduce reservas de hierro. Combínalas con vitamina C para mejor absorción.</div></div>
+        </div>
+        <div class="food-card" data-phase="mens">
+          <div class="food-emoji">🍫</div>
+          <div class="food-body"><span class="food-phase fp-mens">Menstruación</span><div class="food-title">Chocolate negro +70%</div><div class="food-desc">El magnesio alivia cólicos y eleva la serotonina. 20-30g al día es ideal. Evita el chocolate con mucho azúcar.</div></div>
+        </div>
+        <div class="food-card" data-phase="mens">
+          <div class="food-emoji">🫚</div>
+          <div class="food-body"><span class="food-phase fp-mens">Menstruación</span><div class="food-title">Jengibre y cúrcuma</div><div class="food-desc">Potentes antiinflamatorios naturales. Reducen prostaglandinas responsables de los cólicos. Ideales en infusión o golden milk.</div></div>
+        </div>
+        <div class="food-card" data-phase="follic">
+          <div class="food-emoji">🥚</div>
+          <div class="food-body"><span class="food-phase fp-follic">Folicular</span><div class="food-title">Huevos y semillas de lino</div><div class="food-desc">El zinc y la vitamina B6 apoyan la producción de estrógenos. Los fitoestrógenos del lino equilibran el inicio del ciclo.</div></div>
+        </div>
+        <div class="food-card" data-phase="follic">
+          <div class="food-emoji">🥦</div>
+          <div class="food-body"><span class="food-phase fp-follic">Folicular</span><div class="food-title">Brócoli y coles</div><div class="food-desc">El indol-3-carbinol ayuda al hígado a metabolizar estrógenos correctamente. Excelente durante la fase de crecimiento folicular.</div></div>
+        </div>
+        <div class="food-card" data-phase="ovul">
+          <div class="food-emoji">🥑</div>
+          <div class="food-body"><span class="food-phase fp-ovul">Ovulación</span><div class="food-title">Aguacate y salmón</div><div class="food-desc">Los ácidos grasos omega-3 apoyan la fertilidad y reducen inflamación. El zinc del salmón es clave para la ovulación.</div></div>
+        </div>
+        <div class="food-card" data-phase="ovul">
+          <div class="food-emoji">🍓</div>
+          <div class="food-body"><span class="food-phase fp-ovul">Ovulación</span><div class="food-title">Frutas rojas y antioxidantes</div><div class="food-desc">Protegen los óvulos del estrés oxidativo. Los arándanos, frambuesas y moras son especialmente beneficiosos en esta ventana fértil.</div></div>
+        </div>
+        <div class="food-card" data-phase="lut">
+          <div class="food-emoji">🍠</div>
+          <div class="food-body"><span class="food-phase fp-lut">Lútea</span><div class="food-title">Batata y semillas de girasol</div><div class="food-desc">La vitamina B6 que necesita la progesterona. El selenio de las semillas equilibra el ciclo hormonal y reduce el SPM.</div></div>
+        </div>
+        <div class="food-card" data-phase="lut">
+          <div class="food-emoji">🌰</div>
+          <div class="food-body"><span class="food-phase fp-lut">Lútea</span><div class="food-title">Nueces y magnesio</div><div class="food-desc">El magnesio reduce la retención de líquidos, la irritabilidad y los antojos dulces del SPM. 300mg al día es la dosis recomendada.</div></div>
+        </div>
+      </div>
+
+      <div class="premium-gate" id="premium-food">
+        <div class="pg-stars">✦ ✦ ✦</div>
+        <div class="pg-badge"><i class="fa-solid fa-crown"></i> PREMIUM</div>
+        <div class="pg-title"><em>Dieta Ciclo</em> · Bajar de peso</div>
+        <div class="pg-sub">Aprovecha cada fase hormonal para perder peso de forma natural, sin pasar hambre y en armonía con tu cuerpo.</div>
+        <div class="pg-features">
+          <div class="pg-feat"><i class="fa-solid fa-fire"></i>Fase folicular: metabolismo acelerado, quema más calorías con menos esfuerzo</div>
+          <div class="pg-feat"><i class="fa-solid fa-leaf"></i>Ovulación: ventana antiinflamatoria, máxima eficiencia metabólica</div>
+          <div class="pg-feat"><i class="fa-solid fa-droplet"></i>Fase lútea: evita retención de líquidos con alimentos específicos</div>
+          <div class="pg-feat"><i class="fa-solid fa-heart"></i>Menstruación: reposición sin culpa, qué comer para no engordar</div>
+          <div class="pg-feat"><i class="fa-solid fa-chart-line"></i>Plan semanal personalizado según TU ciclo</div>
+        </div>
+        <button class="btn-gold" onclick="openLockModal()">
+          <i class="fa-solid fa-star"></i> Desbloquear con Pase Premium Total · S/ 50
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-family" class="tab">
+    <div style="padding:0 20px">
+      <div class="section-title" style="margin-top:24px">Sincronía familiar</div>
+      <div class="family-intro">La convivencia sincroniza los ciclos hormonales a través de feromonas (efecto McClintock). Conocer el ciclo de tus convivientes te ayuda a entender variaciones en el tuyo.</div>
+
+      <div class="premium-gate premium-fam" id="premium-family">
+        <div class="pg-stars">✦ ✦</div>
+        <div class="pg-badge"><i class="fa-solid fa-crown"></i> PREMIUM</div>
+        <div class="pg-title"><em>Sincronía</em> · Familia</div>
+        <div class="pg-sub">Conecta los ciclos de tus familiares que viven contigo. Entiende cómo se influencian mutuamente.</div>
+        <div class="pg-features">
+          <div class="pg-feat"><i class="fa-solid fa-users"></i>Invita a mamá, hermanas, primas que viven contigo</div>
+          <div class="pg-feat"><i class="fa-solid fa-arrows-rotate"></i>Ve en qué fase está cada una en tiempo real</div>
+          <div class="pg-feat"><i class="fa-solid fa-shield"></i>Privacidad total · cada una controla qué comparte</div>
+          <div class="pg-feat"><i class="fa-solid fa-bell"></i>Alertas de sincronía: cuando sus ciclos se acercan</div>
+        </div>
+        <button class="btn-gold" onclick="openLockModal()">
+          <i class="fa-solid fa-star"></i> Activar con Pase Premium Total
+        </button>
+      </div>
+
+      <div id="family-unlocked" style="display:none">
+        <div class="fam-card">
+          <div class="fam-avatar" style="background:var(--rose)">TÚ</div>
+          <div class="fam-info"><div class="fam-name">Mi ciclo</div><div class="fam-phase" id="my-phase-fam">Fase lútea · día 22</div></div>
+          <div class="sync-dot sync-on"></div>
+        </div>
+        <div class="fam-card">
+          <div class="fam-avatar" style="background:var(--plum)">MA</div>
+          <div class="fam-info"><div class="fam-name">Mamá</div><div class="fam-phase">Fase folicular · día 8</div></div>
+          <div class="sync-dot sync-on"></div>
+        </div>
+        <div class="fam-card">
+          <div class="fam-avatar" style="background:var(--teal)">HE</div>
+          <div class="fam-info"><div class="fam-name">Hermana Elena</div><div class="fam-phase">Menstruación · día 2</div></div>
+          <div class="sync-dot sync-adj"></div>
+        </div>
+        <button class="btn-add-fam" onclick="toast('Invitación enviada 💌')"><i class="fa-solid fa-user-plus"></i> Invitar familiar</button>
+      </div>
+
+      <div class="mcclintock">
+        <h4>📖 Efecto McClintock</h4>
+        <p>Investigación de la Universidad de Chicago muestra que mujeres que conviven tienden a sincronizar sus ciclos a través de señales químicas (feromonas). Este fenómeno puede hacer que tu ciclo se adelante, se retrase o cambie de duración con el tiempo.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-info" class="tab">
+    <div style="padding:0 20px">
+      <div class="section-title" style="margin-top:24px;margin-bottom:4px">Ciencia del ciclo</div>
+      <span class="science-badge">✓ Información médica verificada</span>
+
+      <div class="info-section">
+        <div class="info-card">
+          <div class="info-card-title"><div class="phase-marker" style="background:var(--rose)"></div>Fase menstrual (días 1–5)</div>
+          <div class="info-card-text">Los niveles de estrógeno y progesterona están en su punto más bajo, lo que provoca el desprendimiento del endometrio. El cuerpo necesita hierro, antiinflamatorios naturales y descanso activo. Es normal sentir cólicos, fatiga y cambios de ánimo.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-title"><div class="phase-marker" style="background:var(--gold)"></div>Fase folicular (días 6–13)</div>
+          <div class="info-card-text">La FSH estimula el desarrollo de folículos ováricos. El estrógeno sube gradualmente, mejorando el estado de ánimo, la energía y la concentración. Es el mejor momento para nuevos proyectos, ejercicio intenso y socializar.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-title"><div class="phase-marker" style="background:var(--teal)"></div>Ovulación (días 14–16)</div>
+          <div class="info-card-text">El pico de LH provoca la liberación del óvulo. Máxima fertilidad, energía y libido. La temperatura basal corporal sube 0.2–0.5°C. El moco cervical se vuelve más transparente y elástico.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-title"><div class="phase-marker" style="background:var(--plum)"></div>Fase lútea (días 17–28)</div>
+          <div class="info-card-text">El cuerpo lúteo produce progesterona. Puede aparecer el SPM: irritabilidad, hinchazón, antojos y fatiga. El magnesio, calcio y vitamina B6 son tus aliados. Si no hay embarazo, los niveles hormonales caen y comienza un nuevo ciclo.</div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-bottom:16px">Preguntas frecuentes</div>
+      <div class="info-card" style="padding:0 16px;border-radius:var(--radius-sm)">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">¿Es normal un ciclo de 21–35 días? <i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">Sí. La duración "normal" del ciclo varía entre 21 y 35 días. Lo más importante es que sea regular para ti. Un ciclo de 35 días que siempre llega puntual es perfectamente saludable. Ciclos muy irregulares o cambios bruscos merecen consulta médica.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">¿El estrés puede retrasar mi regla? <i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">Sí. El cortisol (hormona del estrés) puede inhibir la liberación de GnRH, retrasando o suprimiendo la ovulación y por tanto la menstruación. El eje hipotálamo-hipófisis-ovario es muy sensible al estrés crónico, el ejercicio extremo y los cambios de peso.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">¿Qué diferencia hay entre SPM y TDPM? <i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">El SPM (síndrome premenstrual) afecta al 75% de mujeres con síntomas leves a moderados. El TDPM (trastorno disfórico premenstrual) es una forma severa que afecta al 3-8%, con síntomas emocionales intensos que interfieren significativamente con la vida diaria. El TDPM requiere diagnóstico y tratamiento médico.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">¿Puedo quedar embarazada durante mi regla? <i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">Es poco probable pero posible, especialmente si tienes ciclos cortos. Los espermatozoides pueden sobrevivir hasta 5 días en el útero, por lo que si ovulas temprano, podrías coincidir con espermatozoides activos de relaciones durante la menstruación.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">¿La dieta realmente afecta mi ciclo? <i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">Sí, significativamente. La deficiencia de hierro causa ciclos irregulares y sangrado abundante. El exceso de azúcar eleva la insulina y puede empeorar el SPM. Las grasas saludables son necesarias para producir hormonas sexuales. Una dieta antiinflamatoria puede reducir los cólicos hasta en un 40% según estudios publicados en el Journal of Obstetrics.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="app-nav">
+    <button class="nav-item active" onclick="showTab('home',this)"><i class="fa-solid fa-house"></i>Inicio</button>
+    <button class="nav-item" onclick="showTab('calendar',this)"><i class="fa-regular fa-calendar"></i>Calendario</button>
+    <button class="nav-item" onclick="showTab('food',this)"><i class="fa-solid fa-bowl-food"></i>Nutrición</button>
+    <button class="nav-item" onclick="showTab('family',this)"><i class="fa-solid fa-people-group"></i>Familia</button>
+    <button class="nav-item" onclick="showTab('info',this)"><i class="fa-solid fa-heart-pulse"></i>Salud</button>
+  </nav>
+</div>
+
+<div class="modal-overlay" id="lock-modal" onclick="if(event.target.id==='lock-modal')closeLockModal()">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;font-size:42px;margin-bottom:10px">🔒</div>
+    <div class="modal-title" style="text-align:center">Función <em style="font-style:italic;color:var(--gold)">Premium Total</em></div>
+    <div class="modal-sub" style="text-align:center">Esta función está incluida en el <strong>Pase Premium Total (S/ 50)</strong></div>
+
+    <div style="background:var(--gold-light);border-radius:var(--radius-sm);padding:16px;margin-bottom:20px;border:1px solid rgba(200,151,58,0.3)">
+      <div style="font-size:13px;font-weight:600;color:#7A5210;margin-bottom:10px">✨ Pase Premium Total incluye:</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#9A6A20"><i class="fa-solid fa-star" style="color:var(--gold);margin-top:2px;flex-shrink:0"></i><div><strong style="color:#7A5210">Dieta Ciclo Hormonal</strong> — Plan semanal para bajar de peso con cada fase</div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#9A6A20"><i class="fa-solid fa-star" style="color:var(--gold);margin-top:2px;flex-shrink:0"></i><div><strong style="color:#7A5210">Sincronía Familiar</strong> — Conecta el ciclo de tus convivientes</div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#9A6A20"><i class="fa-solid fa-star" style="color:var(--gold);margin-top:2px;flex-shrink:0"></i><div><strong style="color:#7A5210">Análisis avanzado</strong> — Tendencias, exportar PDF, predicciones precisas</div></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#9A6A20"><i class="fa-solid fa-star" style="color:var(--gold);margin-top:2px;flex-shrink:0"></i><div><strong style="color:#7A5210">Recetas exclusivas</strong> — +200 recetas organizadas por fase</div></div>
+      </div>
+    </div>
+
+    <div style="background:var(--rose-light);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--rose-deep);text-align:center">
+      <strong>¿Tienes una tarjeta Premium?</strong><br>
+      <span style="font-size:12px;color:var(--text-muted)">Introduce tu código LUNA-PREM-XXX para activarlo ahora mismo</span>
+    </div>
+
+    <button class="btn-gold" style="margin-bottom:10px" onclick="closeLockModal();upgradeWithCode()">
+      <i class="fa-solid fa-crown"></i> Tengo mi código Premium ✦
+    </button>
+    <button onclick="closeLockModal()" style="display:block;width:100%;background:none;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:8px">Ahora no</button>
+  </div>
+</div>
+
+<div class="toast" id="toast-el"></div>
+
+</div>
+
+<div class="toast" id="toast-el"></div>
+
+</div>
+<script src="script.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('Service Worker registrado:', reg.scope))
+        .catch(err => console.warn('Service Worker fallo:', err));
+    });
+  }
+</script>

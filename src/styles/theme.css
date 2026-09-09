@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #06010f;
+}
+
+/* ============ COSMIC BACKGROUND ============ */
+.cosmic-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,58,237,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 80%, rgba(236,72,153,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 80% at 50% 50%, rgba(99,42,172,0.12) 0%, transparent 70%),
+    linear-gradient(160deg, #0f0422 0%, #07011a 40%, #0c0125 100%);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Stars layer */
+.cosmic-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8% 18%, rgba(255,255,255,0.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 28% 62%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 53% 12%, rgba(255,255,255,0.95) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 44%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 22%, rgba(255,255,255,0.75) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 14% 78%, rgba(255,255,255,0.65) 0%, transparent 100%),
+    radial-gradient(1px 1px at 42% 88%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 68%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 52%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 4% 38%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 76% 6%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 47% 33%, rgba(185,160,255,0.9) 0%, transparent 100%),
+    radial-gradient(2px 2px at 22% 48%, rgba(244,114,182,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 75%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 33% 20%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 81% 55%, rgba(200,160,255,0.7) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============ GLASSMORPHISM ============ */
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.glass-pink {
+  background: rgba(244,114,182,0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(244,114,182,0.2);
+}
+
+.glass-purple {
+  background: rgba(139,92,246,0.1);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(139,92,246,0.25);
+}
+
+.glass-strong {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* ============ ZEN MODE ============ */
+.zen-mode {
+  filter: saturate(0.35) brightness(0.8);
+}
+.zen-mode * {
+  animation-play-state: paused !important;
+  transition: color 0.3s, background-color 0.3s, opacity 0.3s !important;
+}
+
+/* ============ TEXT GRADIENTS ============ */
+.text-cosmic {
+  background: linear-gradient(135deg, #c084fc, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-luna {
+  background: linear-gradient(135deg, #fde68a, #f9a8d4, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-nebula {
+  background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============ COSMIC BUTTON ============ */
+.btn-cosmic {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #ec4899 100%);
+  box-shadow: 0 8px 32px rgba(124,58,237,0.45), 0 0 0 1px rgba(255,255,255,0.1) inset;
+  transition: all 0.3s ease;
+  border-radius: 9999px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.btn-cosmic:hover {
+  box-shadow: 0 12px 40px rgba(124,58,237,0.65), 0 0 0 1px rgba(255,255,255,0.15) inset;
+  transform: translateY(-2px);
+}
+.btn-cosmic:active { transform: translateY(0); }
+
+/* ============ MOON GLOW ============ */
+.moon-glow {
+  filter: drop-shadow(0 0 16px rgba(255,220,140,0.8)) drop-shadow(0 0 36px rgba(255,200,80,0.4));
+}
+.moon-glow-full {
+  filter: drop-shadow(0 0 28px rgba(255,230,150,0.95)) drop-shadow(0 0 56px rgba(255,200,80,0.5)) drop-shadow(0 0 90px rgba(255,180,60,0.3));
+}
+
+/* ============ LOADER ============ */
+.loader {
+  border: 2px solid rgba(255,255,255,0.12);
+  border-top: 2px solid #c084fc;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.65); opacity: 0.15; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(2deg); }
+  66% { transform: translateY(-5px) rotate(-1deg); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.85); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+@keyframes shimmer-sweep {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes moon-rise {
+  from { transform: translateY(30px) scale(0.8); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes nebula-drift {
+  0%, 100% { transform: translate(0,0) scale(1); opacity: 0.6; }
+  50% { transform: translate(8px,-12px) scale(1.04); opacity: 0.8; }
+}
+
+.animate-breathe { animation: breathe 8s ease-in-out infinite; }
+.animate-float { animation: float 5s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+.animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
+.animate-pulse-ring { animation: pulse-ring 2.5s ease-out infinite; }
+.animate-moon-rise { animation: moon-rise 1s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.animate-nebula { animation: nebula-drift 18s ease-in-out infinite; }
+
+/* ============ DEV MODE ============ */
+.dev-panel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: #050505;
+  color: #39ff14;
+  line-height: 1.6;
+}
+.dev-panel .dk { color: #c084fc; }
+.dev-panel .dv { color: #34d399; }
+.dev-panel .ds { color: #fbbf24; }
+.dev-panel .dn { color: #60a5fa; }
+.dev-panel .db { color: #f87171; }
+
+/* ============ SCROLLBAR ============ */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.5); border-radius: 4px; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
